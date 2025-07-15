@@ -30,7 +30,7 @@ def run_command_loop():
             phone = input("Phone: ")
             email = input("Email: ")
             address = input("Address: ")
-            birthday = input("Birthday (YYYY-MM-DD): ")
+            birthday = input("Birthday (DD.MM.YYYY): ")
             try:
                 contact_book.add_contact(Contact(name, phone, email, address, birthday))
                 print("Contact added.")
@@ -40,7 +40,7 @@ def run_command_loop():
             q = input("Search: ")
             results = contact_book.search_contacts(q)
             for c in results:
-                print(vars(c))
+                print(c)
         elif command.startswith("add note"):
             text = input("Note text: ")
             tags = input("Tags (comma-separated): ").split(',')
@@ -58,5 +58,16 @@ def run_command_loop():
         elif command.startswith("contacts"):
             # Get all contacts
             pass
+        
+        elif command.startswith("show birthday"):
+            name = input("Name: ")
+            contact = contact_book.find(name)
+            if contact and contact.birthday:
+                days = contact.birthday.days_to_birthday()
+                bday_str = str(contact.birthday)
+                print(f"{name}'s birthday is {bday_str}, it is in {days} days.")
+            else:
+                print("Birthday not found.")
+
         else:
             print("Unknown command. Try again.")
