@@ -1,4 +1,5 @@
-from models.contact import Contact
+from cli.commands import add_contact, search_contact, add_note, search_note, list_notes, list_contacts, edit_contact, \
+    delete_contact, edit_note, delete_note
 from services.contact_book import ContactBook
 from services.note_book import NoteBook
 from utils.utils import load_data, save_data
@@ -21,42 +22,51 @@ def run_command_loop():
 
         if command in ["close", "exit"]:
             save_data(contact_book.contacts, "addressbook.pkl")
-            save_data(note_book.notes, "notes.searapkl")
+            save_data(note_book.notes, "notes.pkl")
             print("Good bye!")
             break
 
-        elif command.startswith("add contact"):
-            name = input("Name: ")
-            phone = input("Phone: ")
-            email = input("Email: ")
-            address = input("Address: ")
-            birthday = input("Birthday (YYYY-MM-DD): ")
-            try:
-                contact_book.add_contact(Contact(name, phone, email, address, birthday))
-                print("Contact added.")
-            except ValueError as e:
-                print("Error:", e)
+
+        if command.startswith("add contact"):
+            args = command[len("add contact"):].strip().split()
+            print(add_contact(args, contact_book))
+
         elif command.startswith("search contact"):
-            q = input("Search: ")
-            results = contact_book.search_contacts(q)
-            for c in results:
-                print(vars(c))
+            args = command[len("search contact"):].strip().split()
+            print(search_contact(args, contact_book))
+
         elif command.startswith("add note"):
-            text = input("Note text: ")
-            tags = input("Tags (comma-separated): ").split(',')
-            note_book.add_note(text, tags)
-            print("Note added.")
+            args = command[len("add note"):].strip().split()
+            print(add_note(args, note_book))
+
         elif command.startswith("search note"):
-            keyword = input("Keyword or tag: ")
-            results = note_book.search_notes(keyword)
-            for n in results:
-                print(f"{n.text} | Tags: {', '.join(n.tags)}")
+            args = command[len("search note"):].strip().split()
+            print(search_note(args, note_book))
 
         elif command.startswith("notes"):
-            # Get all notes
-            pass
+            args = command[len("notes"):].strip().split()
+            print(list_notes(args, note_book))
+
         elif command.startswith("contacts"):
-            # Get all contacts
-            pass
+            args = command[len("contacts"):].strip().split()
+            print(list_contacts(args, contact_book))
+
+        elif command.startswith("edit contact"):
+            args = command[len("edit contact"):].strip().split()
+            print(args)
+            print(edit_contact(args, contact_book))
+
+
+        elif command.startswith("delete contact"):
+            args = command[len("delete contact"):].strip().split()
+            print(delete_contact(args, contact_book))
+
+        elif command.startswith("edit note"):
+            args = command[len("edit note"):].strip().split()
+            print(edit_note(args, note_book))
+
+        elif command.startswith("delete note"):
+            args = command[len("delete note"):].strip().split()
+            print(delete_note(args, note_book))
         else:
             print("Unknown command. Try again.")

@@ -1,33 +1,27 @@
 from datetime import timedelta, datetime
-import re
 
-def is_valid_email(email):
-    return bool(re.match(r"[^@]+@[^@]+\.[^@]+", email))
-
-def is_valid_phone(phone):
-    return bool(re.match(r"^\+?\d{10,15}$", phone))
 
 
 class ContactBook:
     def __init__(self):
-        self.contacts = {}
+        self.contacts = {}  # Stores contacts with original casing
+
+    def _get_actual_key(self, name):
+        # Find actual key (original casing) by lowercased match
+        for stored_name in self.contacts:
+            if stored_name.lower() == name.lower():
+                return stored_name
+        return None
 
     def add_contact(self, contact):
-        if not is_valid_email(contact.email) or not is_valid_phone(contact.phone):
-            raise ValueError("Invalid phone or email")
         self.contacts[contact.name] = contact
 
     def find(self, name):
-        return self.contacts.get(name)
-
-    def get_birthdays_in(self, days):
-        return []
-
-    def search_contacts(self, query):
-        return [c for c in self.contacts.values() if query.lower() in c.name.lower()]
+        actual_key = self._get_actual_key(name)
+        return self.contacts.get(actual_key)
 
     def edit_contact(self, name, **kwargs):
-        contact = self.contacts.get(name)
+        contact = self.find(name)
         if not contact:
             return False
         for key, value in kwargs.items():
@@ -35,4 +29,11 @@ class ContactBook:
         return True
 
     def delete_contact(self, name):
-        return self.contacts.pop(name, None)
+        actual_key = self._get_actual_key(name)
+        if actual_key:
+            return self.contacts.pop(actual_key)
+        return None
+
+    def search_contacts(self, query):
+        return [c for c in self.contacts.values() if query.lower() in c.name.lower()]
+
