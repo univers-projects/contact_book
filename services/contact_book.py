@@ -1,13 +1,11 @@
-from datetime import timedelta, datetime
-
+from datetime import timedelta, datetime, date
 
 
 class ContactBook:
     def __init__(self):
-        self.contacts = {}  # Stores contacts with original casing
+        self.contacts = {}
 
     def _get_actual_key(self, name):
-        # Find actual key (original casing) by lowercased match
         for stored_name in self.contacts:
             if stored_name.lower() == name.lower():
                 return stored_name
@@ -37,3 +35,18 @@ class ContactBook:
     def search_contacts(self, query):
         return [c for c in self.contacts.values() if query.lower() in c.name.lower()]
 
+    def days_to_birthday(self, birthday_str):
+        try:
+            birthday = datetime.strptime(birthday_str, "%Y-%m-%d").date()
+        except ValueError:
+            return "Invalid birthday format. Expected YYYY-MM-DD."
+
+        today = date.today()
+        this_year_birthday = date(today.year, birthday.month, birthday.day)
+
+        if this_year_birthday < today:
+            next_birthday = date(today.year + 1, birthday.month, birthday.day)
+        else:
+            next_birthday = this_year_birthday
+
+        return (next_birthday - today).days

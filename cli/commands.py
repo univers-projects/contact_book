@@ -1,4 +1,6 @@
 import re
+from datetime import datetime
+
 from models.contact import Contact
 from services.contact_book import ContactBook
 from utils.utils import input_error
@@ -11,6 +13,14 @@ def is_valid_email(email):
 
 def is_valid_phone(phone):
     return bool(re.match(r"^\+?\d{10,15}$", phone))
+
+
+def is_valid_birthday(birthday_str: str) -> bool:
+    try:
+        datetime.strptime(birthday_str, "%Y-%m-%d")
+        return True
+    except ValueError:
+        return False
 
 
 @input_error
@@ -29,6 +39,8 @@ def add_contact(args, contact_book: ContactBook):
 
     address = input("Address (optional): ").strip()
     birthday = input("Birthday (YYYY-MM-DD, optional): ").strip()
+    if birthday and not is_valid_birthday(birthday):
+        raise ValueError("Invalid birthday. Use YYYY-MM-DD")
 
     contact = Contact(name, phone, email, address, birthday)
     contact_book.add_contact(contact)
@@ -116,3 +128,14 @@ def delete_note(_, note_book: NoteBook):
     ]
 
     return "Note(s) deleted." if len(note_book.notes) < original_len else "Note not found."
+
+
+@input_error
+def show_birthday(_, contact_book):
+    name = input("Name: ").strip()
+    contact = contact_book.find(name)
+
+    if contact and contact.birthday:
+        days = contact_book.days_to_birthday(contact.birthday)
+        return f"{name}'s birthday is on {contact.birthday}, in {days} days."
+    return "Birthday not found."
