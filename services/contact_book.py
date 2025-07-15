@@ -36,19 +36,3 @@ class ContactBook:
 
     def delete_contact(self, name):
         return self.contacts.pop(name, None)
-
-    def get_upcoming_birthdays(self):
-        today = datetime.today().date()
-        upcoming = []
-        for record in self.data.values():
-            if record.birthday:
-                bday_this_year = record.birthday.value.replace(year=today.year)
-                if bday_this_year < today:
-                    bday_this_year = bday_this_year.replace(year=today.year + 1)
-                delta_days = (bday_this_year - today).days
-                if 0 <= delta_days < 7:
-                    congrat_date = bday_this_year
-                    if congrat_date.weekday() >= 5:
-                        congrat_date += timedelta(days=(7 - congrat_date.weekday()))
-                    upcoming.append({"name": record.name.value, "congratulation_date": congrat_date.strftime('%Y-%m-%d')})
-        return upcoming
