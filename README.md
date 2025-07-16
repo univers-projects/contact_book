@@ -6,9 +6,6 @@
   <h3 align="center">memomate</h3>
   <p align="center">
     👩‍💻 Ваш персональний бот-помічник для керування контактами та нотатками
-    <br />
-    <br />
-    <a href="#about-the-project"><strong>Докладніше »</strong></a>
   </p>
 </div>
 
