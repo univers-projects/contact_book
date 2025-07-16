@@ -26,3 +26,14 @@ class Birthday(Field):
 
     def __str__(self):
         return self._value.strftime("%d.%m.%Y")
+
+##### - json storage task - #####
+   def to_dict(self):
+       #Серіалізує дату народження як ISO-рядок
+       return {"date": self._value.isoformat()}
+
+
+   @classmethod
+   def from_dict(cls, data):
+       #Створює Birthday із словника
+       return cls(data["date"])
