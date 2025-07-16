@@ -54,10 +54,29 @@ def add_contact(_, contact_book: ContactBook):
 def search_contact(_, contact_book: ContactBook):
     query = input(f"{Fore.CYAN}Search query (name):{Style.RESET_ALL} ").strip()
     results = contact_book.search_contacts(query)
-    return (
-        "\n".join(f"{Fore.YELLOW}{c.name}{Style.RESET_ALL}: {vars(c)}" for c in results)
-        or f"{Fore.RED}No contacts found.{Style.RESET_ALL}"
-    )
+
+    if not results:
+        return f"{Fore.RED}No contacts found.{Style.RESET_ALL}"
+
+    table = []
+    for contact in results:
+        table.append([
+            f"{Fore.YELLOW}{contact.name}{Style.RESET_ALL}",
+            f"{Fore.CYAN}{contact.phone}{Style.RESET_ALL}",
+            f"{Fore.MAGENTA}{contact.email or ''}{Style.RESET_ALL}",
+            f"{Fore.BLUE}{contact.address or ''}{Style.RESET_ALL}",
+            f"{Fore.GREEN}{contact.birthday or ''}{Style.RESET_ALL}",
+        ])
+
+    headers = [
+        f"{Fore.YELLOW}Name{Style.RESET_ALL}",
+        f"{Fore.CYAN}Phone{Style.RESET_ALL}",
+        f"{Fore.MAGENTA}Email{Style.RESET_ALL}",
+        f"{Fore.BLUE}Address{Style.RESET_ALL}",
+        f"{Fore.GREEN}Birthday{Style.RESET_ALL}"
+    ]
+
+    return tabulate(table, headers=headers, tablefmt="grid")
 
 
 @input_error
@@ -228,7 +247,7 @@ def show_commands(_, *args):
     {Fore.YELLOW}search contact{Style.RESET_ALL}             - Search contacts by name
     {Fore.YELLOW}edit contact{Style.RESET_ALL}               - Edit a contact field
     {Fore.YELLOW}delete contact{Style.RESET_ALL}             - Delete a contact
-    {Fore.YELLOW}contacts{Style.RESET_ALL}                   - List all contacts
+    {Fore.YELLOW}show contacts{Style.RESET_ALL}                   - List all contacts
     {Fore.YELLOW}show birthday{Style.RESET_ALL}              - Show upcoming birthday for a contact
     {Fore.YELLOW}birthdays{Style.RESET_ALL}                  - Show upcoming birthday for a given number of days
 
@@ -237,7 +256,7 @@ def show_commands(_, *args):
     {Fore.YELLOW}search note{Style.RESET_ALL}                - Search notes by keyword or tag
     {Fore.YELLOW}edit note{Style.RESET_ALL}                  - Edit a note by text or tag
     {Fore.YELLOW}delete note{Style.RESET_ALL}                - Delete a note by text or tag
-    {Fore.YELLOW}notes{Style.RESET_ALL}                      - List all notes
+    {Fore.YELLOW}show notes{Style.RESET_ALL}                      - List all notes
 
   {Fore.CYAN}🚪 Exit:{Style.RESET_ALL}
     {Fore.YELLOW}exit / close{Style.RESET_ALL}               - Exit the assistant bot
