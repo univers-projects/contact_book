@@ -241,13 +241,19 @@ def birthdays(_, contact_book):
 
 @input_error
 def show_commands(_, *args):
+    """
+
+    :param _:
+    :param args:
+    :return:
+    """
     return f"""{Fore.GREEN}Available commands:{Style.RESET_ALL}
   {Fore.CYAN}📇 Contacts:{Style.RESET_ALL}
     {Fore.YELLOW}add contact{Style.RESET_ALL}                - Add a new contact
     {Fore.YELLOW}search contact{Style.RESET_ALL}             - Search contacts by name
     {Fore.YELLOW}edit contact{Style.RESET_ALL}               - Edit a contact field
     {Fore.YELLOW}delete contact{Style.RESET_ALL}             - Delete a contact
-    {Fore.YELLOW}show contacts{Style.RESET_ALL}                   - List all contacts
+    {Fore.YELLOW}show contacts{Style.RESET_ALL}              - List all contacts
     {Fore.YELLOW}show birthday{Style.RESET_ALL}              - Show upcoming birthday for a contact
     {Fore.YELLOW}birthdays{Style.RESET_ALL}                  - Show upcoming birthday for a given number of days
 
@@ -256,7 +262,7 @@ def show_commands(_, *args):
     {Fore.YELLOW}search note{Style.RESET_ALL}                - Search notes by keyword or tag
     {Fore.YELLOW}edit note{Style.RESET_ALL}                  - Edit a note by text or tag
     {Fore.YELLOW}delete note{Style.RESET_ALL}                - Delete a note by text or tag
-    {Fore.YELLOW}show notes{Style.RESET_ALL}                      - List all notes
+    {Fore.YELLOW}show notes{Style.RESET_ALL}                 - List all notes
 
   {Fore.CYAN}🚪 Exit:{Style.RESET_ALL}
     {Fore.YELLOW}exit / close{Style.RESET_ALL}               - Exit the assistant bot

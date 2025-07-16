@@ -38,7 +38,6 @@ def run_command_loop():
     contact_book = ContactBook()
     note_book = NoteBook()
 
-    # Load saved data
     contact_book.contacts = load_data("addressbook.pkl") or {}
     note_book.notes = load_data("notes.pkl") or []
 
