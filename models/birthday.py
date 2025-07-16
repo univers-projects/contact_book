@@ -1,16 +1,39 @@
-from datetime import datetime
-
+from datetime import datetime, date
+from utils.date_helper import parse_birthday
 from models.field import Field
 
-
 class Birthday(Field):
+    def __init__(self, val: str):
+        self._value = parse_birthday(val)
+
     @property
-    def value(self):
+    def value(self) -> date:
         return self._value
 
     @value.setter
     def value(self, val: str):
-        try:
-            self._value = datetime.strptime(val, "%d.%m.%Y").date()
-        except ValueError:
-            raise ValueError("Invalid date format. Use DD.MM.YYYY")
+        self._value = parse_birthday(val)
+
+    def days_to_birthday(self) -> int:
+        """
+        Returns number of days until the next birthday.
+        """
+        today = datetime.today().date()
+        next_birthday = self._value.replace(year=today.year)
+        if next_birthday < today:
+            next_birthday = next_birthday.replace(year=today.year + 1)
+        return (next_birthday - today).days
+
+    def __str__(self):
+        return self._value.strftime("%d.%m.%Y")
+
+##### - json storage task - #####
+   def to_dict(self):
+       #Серіалізує дату народження як ISO-рядок
+       return {"date": self._value.isoformat()}
+
+
+   @classmethod
+   def from_dict(cls, data):
+       #Створює Birthday із словника
+       return cls(data["date"])
