@@ -1,104 +1,89 @@
-<a id="readme-top"></a>
+# MemoMate Assistant Bot
 
-<!-- PROJECT -->
-  <h3 align="center">memomate</h3>
-  <p align="center">
-    👩‍💻 Ваш персональний бот-помічник для керування контактами та нотатками
-  </p>
-</div>
-
-<!-- TABLE OF CONTENTS -->
-<details>
-  <summary>Зміст</summary>
-  <ol>
-    <li><a href="#about-the-project">Про проєкт</a></li>
-    <li><a href="#built-with">Технології</a></li>
-    <li><a href="#features">Функціонал</a></li>
-    <li><a href="#installation">Встановлення</a></li>
-    <li><a href="#usage">Використання</a></li>
-    <li><a href="#license">Ліцензія</a></li>
-  </ol>
-</details>
-
-## 📌 Про проєкт
-
-MemoMate — це консольний бот-помічник, який допомагає зберігати та керувати особистими контактами і нотатками. Він створений як тренувальний проєкт для закріплення знань Python, роботи з файлами та об'єктно-орієнтованого програмування.
-
-Проєкт реалізує ключову ідею цифрового помічника, здатного:
-- зберігати важливу інформацію
-- структурувати записи
-- полегшувати пошук потрібних даних
-
-> Ми це зробили для Квітки, яка пише нотатки всюди та хоче навести з ними ладу🌸
-
-<p align="right">(<a href="#readme-top">до початку</a>)</p>
+MemoMate is a command-line assistant bot built in Python for managing contacts and notes. The bot provides a user-friendly interface to add, edit, delete, and search contacts and notes, along with additional features like birthday tracking, command suggestion, and colorful output formatting using Colorama.
 
 ---
 
-## ⚙️ Технології
+## Features
 
-- Python 3.11
-- Стандартна бібліотека (`datetime`, `re`, `os`, `json`)
-- ООП + CLI інтерфейс
+### 📇 Contacts Management
 
-<p align="right">(<a href="#readme-top">до початку</a>)</p>
+* `add contact`: Add a new contact
+* `search contact`: Search contacts by name
+* `edit contact`: Edit a contact field (name, phone, email, address, birthday)
+* `delete contact`: Delete a contact by name
+* `show contacts`: List all contacts in a colored table
+* `show birthday`: Show upcoming birthday for a contact with days left
+* `birthdays`: Show upcoming birthday for a given number of days
 
----
+### 📜 Notes Management
 
-## 🚀 Основний функціонал
+* `add note`: Add a note with optional tags
+* `search note`: Search notes by keyword or tag
+* `edit note`: Edit a note by text or tag
+* `delete note`: Delete notes by text or tag
+* `show notes`: List all notes in a colored table
 
-### Контакти:
-- Додавання нових контактів (ім’я, телефон, email, адреса, день народження)
-- Пошук за ім’ям
-- Редагування, видалення записів
-- Перевірка правильності введення телефону та email
-- Вивід тих, у кого скоро день народження
+### 🔹 System Commands
 
-### Нотатки:
-- Створення текстових нотаток
-- Пошук, редагування та видалення
-- Додавання тегів
-- Пошук за тегами
-
-### Зберігання:
-- Дані зберігаються у файлах (JSON)
-- Витримує перезапуск - нічого не втрачається
-
-<p align="right">(<a href="#readme-top">до початку</a>)</p>
+* `commands`: Display available commands
+* `exit` / `close`: Exit the assistant bot
 
 ---
 
-## 📥 Встановлення
+## Requirements
+
+Install required packages:
 
 ```bash
-git clone https://github.com/univers-projects/project-memomate/
-cd memomate
+pip install -r requirements.txt
+```
+
+### Key Dependencies:
+
+* Python 3.10+
+* `colorama`: For colored output in terminal
+
+---
+
+## How to Run
+
+```bash
 python main.py
 ```
 
-<p align="right">(<a href="#readme-top">до початку</a>)</p>
+You will see:
 
----
-
-## 🧑‍💻 Використання
-
-Запустіть програму в терміналі. Далі — вводьте команди:
-
-```plaintext
-add contact John +380501112233 john@email.com Kyiv 1990-07-15
-show birthdays 7
-add note "Купити молоко" #покупки
-search note #покупки
+```
+Welcome to the assistant bot! Enter a command:
+>>>
 ```
 
-> Програма підкаже, яку команду можна обрати, просто почніть друкувати 😉
-
-<p align="right">(<a href="#readme-top">до початку</a>)</p>
+Then type any supported command such as `add contact`, `add note`, etc.
 
 ---
 
-## 📄 Ліцензія
+## Smart Suggestions
 
-Використовуйте, як хочете — це навчальний проєкт 💙
+The assistant uses `difflib.get_close_matches()` to suggest the nearest command when an unknown input is entered.
 
-<p align="right">(<a href="#readme-top">до початку</a>)</p>
+---
+
+## Storage
+
+* Contacts and notes are stored using `pickle` in `addressbook.pkl` and `notes.pkl` respectively.
+
+---
+
+## Notes
+
+* Inputs are validated (e.g., phone, email, and birthday formats)
+* Contact search/edit/delete is case-insensitive
+* Notes can be filtered and edited by tag or content
+* Friendly error handling via `@input_error` decorator
+
+---
+
+## License
+
+This project is for demonstration and educational purposes.

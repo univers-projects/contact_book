@@ -12,4 +12,3 @@ class NoteBook:
 
     def delete_note(self, text):
         self.notes = [n for n in self.notes if n.text != text]
-

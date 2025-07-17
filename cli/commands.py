@@ -1,5 +1,5 @@
 import re
-from datetime import datetime, date
+from datetime import datetime
 from tabulate import tabulate
 from colorama import Fore, Style, init
 
