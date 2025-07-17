@@ -28,17 +28,30 @@ def is_valid_birthday(birthday_str: str) -> bool:
 
 @input_error
 def add_contact(_, contact_book: ContactBook):
-    name = input(f"{Fore.CYAN}Name:{Style.RESET_ALL} ").strip().title()
-    if not name:
-        raise ValueError("Name is required.")
+    while True:
+        name = input(f"{Fore.CYAN}Name:{Style.RESET_ALL} ").strip().title()
+        if not name:
+            print(f"{Fore.RED}Name is required.{Style.RESET_ALL}")
+            continue
+        if contact_book.find(name):
+            print(f"{Fore.YELLOW}Contact with name '{name}' already exists. Please choose a different name.{Style.RESET_ALL}")
+            continue
+        break
 
-    phone = input(f"{Fore.CYAN}Phone:{Style.RESET_ALL} ").strip()
-    if not is_valid_phone(phone):
-        raise ValueError("Invalid phone number")
+    while True:
+        phone = input(f"{Fore.CYAN}Phone:{Style.RESET_ALL} ").strip()
+        if is_valid_phone(phone):
+            break
+        print(f"{Fore.RED}Invalid phone number. Please enter a valid phone (10–15 digits, optional '+' at start).{Style.RESET_ALL}")
 
-    email = input(f"{Fore.CYAN}Email (optional):{Style.RESET_ALL} ").strip()
-    if email and not is_valid_email(email):
-        raise ValueError("Invalid email address")
+    email = ""
+    while True:
+        email = input(f"{Fore.CYAN}Email (optional):{Style.RESET_ALL} ").strip()
+        if not email:
+            break  # skip
+        if is_valid_email(email):
+            break
+        print(f"{Fore.RED}Invalid email address. Please enter a valid email or press Enter to skip.{Style.RESET_ALL}")
 
     address = input(f"{Fore.CYAN}Address (optional):{Style.RESET_ALL} ").strip()
     birthday = ""
