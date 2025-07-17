@@ -85,12 +85,22 @@ def edit_contact(_, contact_book: ContactBook):
     field = input(f"{Fore.CYAN}Field to edit (name, phone, email, address, birthday):{Style.RESET_ALL} ").strip()
     value = input(f"{Fore.CYAN}New value for {field}:{Style.RESET_ALL} ").strip()
 
-    success = contact_book.edit_contact(name, **{field: value})
-    return (
-        f"{Fore.GREEN}Contact '{name}' updated.{Style.RESET_ALL}"
-        if success else
-        f"{Fore.RED}Contact '{name}' not found.{Style.RESET_ALL}"
-    )
+    if field == "name":
+        contact = contact_book.find(name)
+        if contact:
+            contact_book.delete_contact(name)
+            contact.name = value
+            contact_book.add_contact(contact)
+            return f"{Fore.GREEN}Contact renamed to '{value}'.{Style.RESET_ALL}"
+        else:
+            return f"{Fore.RED}Contact '{name}' not found.{Style.RESET_ALL}"
+    else:
+        success = contact_book.edit_contact(name, **{field: value})
+        return (
+            f"{Fore.GREEN}Contact '{name}' updated.{Style.RESET_ALL}"
+            if success else
+            f"{Fore.RED}Contact '{name}' not found.{Style.RESET_ALL}"
+        )
 
 
 @input_error
