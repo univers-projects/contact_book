@@ -1,4 +1,4 @@
-from datetime import timedelta, datetime, date
+from datetime import datetime, date
 
 
 class ContactBook:
@@ -12,19 +12,36 @@ class ContactBook:
         return None
 
     def add_contact(self, contact):
+        if self._get_actual_key(contact.name):
+            return False
         self.contacts[contact.name] = contact
+        return True
+
 
     def find(self, name):
         actual_key = self._get_actual_key(name)
         return self.contacts.get(actual_key)
 
-    def edit_contact(self, name, **kwargs):
-        contact = self.find(name)
+    def edit_contact(self, current_name, **kwargs):
+        actual_key = self._get_actual_key(current_name)
+        contact = self.contacts.get(actual_key)
         if not contact:
             return False
+
+        new_name = kwargs.get("name")
+        if new_name and new_name.lower() != actual_key.lower():
+            if self._get_actual_key(new_name):
+                print(f"Cannot rename to '{new_name}': already exists.")
+                return False
+
+            self.contacts.pop(actual_key)
+            self.contacts[new_name] = contact
+
         for key, value in kwargs.items():
             setattr(contact, key, value)
+
         return True
+
 
     def delete_contact(self, name):
         actual_key = self._get_actual_key(name)

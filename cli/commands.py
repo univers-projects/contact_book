@@ -46,8 +46,12 @@ def add_contact(_, contact_book: ContactBook):
         raise ValueError("Invalid birthday. Use YYYY-MM-DD")
 
     contact = Contact(name, phone, email, address, birthday)
-    contact_book.add_contact(contact)
+    success = contact_book.add_contact(contact)
+
+    if not success:
+        return f"{Fore.YELLOW}Contact with name '{name}' already exists.{Style.RESET_ALL}"
     return f"{Fore.GREEN}Contact added.{Style.RESET_ALL}"
+
 
 
 @input_error
@@ -170,11 +174,16 @@ def edit_note(_, note_book: NoteBook):
     identifier = input(f"{Fore.CYAN}Enter note text or tag to edit:{Style.RESET_ALL} ").strip()
     new_text = input(f"{Fore.CYAN}New text:{Style.RESET_ALL} ").strip()
 
-    edited = False
-    for note in note_book.notes:
-        if note.text == identifier or identifier in note.tags:
-            note.text = new_text
-            edited = True
+    new_tags = None
+    update_tags = input(f"{Fore.CYAN}Do you want to edit tags as well? (yes/no):{Style.RESET_ALL} ").strip().lower()
+
+    if update_tags == "yes":
+        tags_input = input(f"{Fore.CYAN}Enter new tags (comma-separated):{Style.RESET_ALL} ").strip()
+        new_tags = [tag.strip() for tag in tags_input.split(',')] if tags_input else []
+    elif update_tags not in ["no", ""]:
+        print(f"{Fore.YELLOW}Unknown response. Tags will not be updated.{Style.RESET_ALL}")
+
+    edited = note_book.edit_note(identifier, new_text=new_text, new_tags=new_tags)
 
     return (
         f"{Fore.GREEN}Note(s) updated.{Style.RESET_ALL}" if edited else f"{Fore.RED}Note not found.{Style.RESET_ALL}"
