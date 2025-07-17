@@ -49,8 +49,19 @@ class ContactBook:
             return self.contacts.pop(actual_key)
         return None
 
-    def search_contacts(self, query):
-        return [c for c in self.contacts.values() if query.lower() in c.name.lower()]
+    def search_contacts(self, query: str):
+        query = query.lower()
+        results = []
+        for contact in self.contacts.values():
+            if (
+                query in contact.name.lower()
+                or query in contact.phone.lower()
+                or (contact.email and query in contact.email.lower())
+                or (contact.address and query in contact.address.lower())
+                or (contact.birthday and query in contact.birthday.lower())
+            ):
+                results.append(contact)
+        return results
 
     def days_to_birthday(self, birthday_str):
         try:
