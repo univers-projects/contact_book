@@ -21,7 +21,7 @@ commands = {
     "edit note": edit_note,
     "delete note": delete_note,
     "show notes": list_notes,
-    "show birthday": show_birthday,
+    "show birthday": (show_birthday, "contact"),
     "commands": show_commands,
     "birthdays": (birthdays, "contact"),
 }
