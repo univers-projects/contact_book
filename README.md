@@ -48,18 +48,46 @@ pip install -r requirements.txt
 
 ## How to Run
 
+If Poetry is active, you can simply run:
+
 ```bash
-python main.py
+memomate
+```
+
+Or with raw Python (if not using Poetry):
+
+```bash
+python3 main.py
 ```
 
 You will see:
 
 ```
-Welcome to the assistant bot! Enter a command:
+Welcome to the assistant bot!
 >>>
 ```
 
 Then type any supported command such as `add contact`, `add note`, etc.
+
+---
+
+## For Developers
+
+This project uses [Poetry](https://python-poetry.org/) to manage dependencies and packaging.
+
+To install dependencies defined in `pyproject.toml`:
+
+```bash
+poetry install
+```
+
+To add a new dependency:
+
+```bash
+poetry add <package_name>
+```
+
+This automatically updates both `pyproject.toml` and `poetry.lock`.
 
 ---
 

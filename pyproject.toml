@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "memomate"
+version = "0.1.0"
+description = "CLI Assistant for managing contacts and notes"
+authors = ["Memomate team"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+colorama = "0.4.6"
+prompt-toolkit = "3.0.51"
+tabulate = "0.9.0"
+wcwidth = "0.2.13"
+
+[tool.poetry.scripts]
+memomate = "main:run_command_loop"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
