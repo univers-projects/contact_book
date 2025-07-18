@@ -209,3 +209,6 @@ __marimo__/
 addressbook.pkl
 draft.py
 notes.pkl
+
+# MacOS
+.DS_Store

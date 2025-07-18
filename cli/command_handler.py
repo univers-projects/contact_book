@@ -34,7 +34,24 @@ style = Style.from_dict({
     'prompt': 'bold',
 })
 
-def run_command_loop():
+def run_command_loop() -> None:
+    """
+        Launches the interactive command-line loop for the assistant bot.
+
+        This function initializes the contact and note books, loads persisted data from pickle files,
+        and listens for user input to execute supported commands such as adding, editing, or listing
+        contacts and notes. It provides auto-suggestions and command completions via PromptToolkit.
+
+        The function supports graceful shutdown via 'exit' or 'close' commands or keyboard interrupts,
+        and it ensures that any changes to contact or note data are saved to disk upon exit.
+
+        Parameters:
+            None
+
+        Returns:
+            None
+        """
+
     contact_book = ContactBook()
     note_book = NoteBook()
 
@@ -66,7 +83,7 @@ def run_command_loop():
                     func = entry
                     context = contact_book if "contact" in matched else note_book
 
-                print(func(None, context))
+                print(func(context))
             else:
                 print("Unknown command. Type 'commands' to see available options.")
         except (EOFError, KeyboardInterrupt):
