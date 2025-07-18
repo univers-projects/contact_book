@@ -108,6 +108,7 @@ class ContactBook:
             return self.contacts.pop(actual_key)
         return None
 
+
     def search_contacts(self, query: str) -> List[Contact]:
         """
         Searches contacts by partial name match (case-insensitive).
@@ -119,7 +120,20 @@ class ContactBook:
             List[Contact]: A list of matching Contact objects.
         """
 
-        return [c for c in self.contacts.values() if query.lower() in c.name.lower()]
+        query = query.lower()
+        results = []
+        for contact in self.contacts.values():
+            fields = [
+                contact.name,
+                contact.phone,
+                contact.email,
+                contact.address,
+                contact.birthday
+            ]
+            if any(f and query in f.lower() for f in fields):
+                results.append(contact)
+        return results
+
 
     def days_to_birthday(self, birthday_str: str) -> Union[int, str]:
         """
