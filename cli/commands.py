@@ -442,14 +442,26 @@ def birthdays(contact_book: ContactBook) -> str:
         if contact.birthday:
             delta = contact_book.days_to_birthday(contact.birthday)
             if isinstance(delta, int) and delta <= days:
-                matches.append([
-                    f"{Fore.YELLOW}{contact.name}{Style.RESET_ALL}",
-                    f"{Fore.GREEN}{contact.birthday}{Style.RESET_ALL}",
-                    f"{Fore.CYAN}{delta} days{Style.RESET_ALL}"
-                ])
+                matches.append((
+                    contact.name,
+                    contact.birthday,
+                    delta
+                ))
 
     if not matches:
         return f"{Fore.RED}No upcoming birthdays in {days} days.{Style.RESET_ALL}"
+
+    # Sort matches by number of days until birthday
+    matches.sort(key=lambda x: x[2])
+
+    table = [
+        [
+            f"{Fore.YELLOW}{name}{Style.RESET_ALL}",
+            f"{Fore.GREEN}{birthday}{Style.RESET_ALL}",
+            f"{Fore.CYAN}{delta} days{Style.RESET_ALL}"
+        ]
+        for name, birthday, delta in matches
+    ]
 
     headers = [
         f"{Fore.YELLOW}Name{Style.RESET_ALL}",
@@ -457,7 +469,7 @@ def birthdays(contact_book: ContactBook) -> str:
         f"{Fore.CYAN}In (Days){Style.RESET_ALL}"
     ]
 
-    return tabulate(matches, headers=headers, tablefmt="fancy_grid")
+    return tabulate(table, headers=headers, tablefmt="fancy_grid")
 
 
 @input_error
