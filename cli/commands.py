@@ -256,7 +256,7 @@ def list_contacts(contact_book: ContactBook) -> str:
         return f"{Fore.RED}No contacts found.{Style.RESET_ALL}"
 
     table = []
-    for contact in contact_book.contacts.values():
+    for contact in sorted(contact_book.contacts.values(), key=lambda c: c.name.lower()):
         table.append([
             f"{Fore.YELLOW}{contact.name}{Style.RESET_ALL}",
             f"{Fore.CYAN}{contact.phone}{Style.RESET_ALL}",
