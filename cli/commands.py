@@ -12,20 +12,22 @@ init(autoreset=True)
 
 
 def is_valid_email(email: str) -> bool:
-    """Check if the given email address is valid.
+    """
+    Check if the given email address is valid.
 
-        Args:
-            email (str): Email address to validate.
+    Args:
+        email (str): Email address to validate.
 
-        Returns:
-            bool: True if valid, False otherwise.
+    Returns:
+        bool: True if valid, False otherwise.
     """
 
     return bool(re.match(r"[^@]+@[^@]+\.[^@]+", email))
 
 
 def is_valid_phone(phone: str) -> bool:
-    """Validate the phone number format.
+    """
+    Validate the phone number format.
 
     Args:
         phone (str): Phone number to validate.
@@ -38,13 +40,14 @@ def is_valid_phone(phone: str) -> bool:
 
 
 def is_valid_birthday(birthday_str: str) -> bool:
-    """Validate the birthday format and ensure it is not in the future.
+    """
+    Validate the birthday format and ensure it is not in the future.
 
-        Args:
-            birthday_str (str): Birthday string in 'YYYY-MM-DD' format.
+    Args:
+        birthday_str (str): Birthday string in 'YYYY-MM-DD' format.
 
-        Returns:
-            bool: True if valid and not in future, False otherwise.
+    Returns:
+        bool: True if valid and not in future, False otherwise.
     """
 
     try:
@@ -56,7 +59,8 @@ def is_valid_birthday(birthday_str: str) -> bool:
 
 @input_error
 def add_contact(contact_book: ContactBook) -> str:
-    """Prompt user for contact details and add a new contact to the book.
+    """
+    Prompt user for contact details and add a new contact to the book.
 
     Args:
         contact_book (ContactBook): Instance of the contact book.
@@ -109,7 +113,8 @@ def add_contact(contact_book: ContactBook) -> str:
 
 @input_error
 def search_contact(contact_book: ContactBook) -> str:
-    """Search for contacts by name and return matching results.
+    """
+    Search for contacts by name and return matching results.
 
     Args:
         contact_book (ContactBook): Instance of the contact book.
@@ -147,7 +152,8 @@ def search_contact(contact_book: ContactBook) -> str:
 
 @input_error
 def edit_contact(contact_book: ContactBook) -> str:
-    """Edit an existing contact's field by name.
+    """
+    Edit an existing contact's field by name.
 
     Args:
         contact_book (ContactBook): Instance of the contact book.
@@ -186,7 +192,8 @@ def edit_contact(contact_book: ContactBook) -> str:
 
 @input_error
 def delete_contact(contact_book: ContactBook) -> str:
-    """Delete a contact by name.
+    """
+    Delete a contact by name.
 
     Args:
         contact_book (ContactBook): Instance of the contact book.
@@ -206,7 +213,8 @@ def delete_contact(contact_book: ContactBook) -> str:
 
 @input_error
 def list_contacts(contact_book: ContactBook) -> str:
-    """List all contacts in the contact book.
+    """
+    List all contacts in the contact book.
 
     Args:
         contact_book (ContactBook): Instance of the contact book.
@@ -241,7 +249,8 @@ def list_contacts(contact_book: ContactBook) -> str:
 
 @input_error
 def add_note(note_book: NoteBook) -> str:
-    """Prompt user to add a new note with optional tags.
+    """
+    Prompt user to add a new note with optional tags.
 
     Args:
         note_book (NoteBook): Instance of the note book.
@@ -259,7 +268,8 @@ def add_note(note_book: NoteBook) -> str:
 
 @input_error
 def search_note(note_book: NoteBook) -> str:
-    """Search for notes by keyword or tag.
+    """
+    Search for notes by keyword or tag.
 
     Args:
         note_book (NoteBook): Instance of the note book.
@@ -278,7 +288,8 @@ def search_note(note_book: NoteBook) -> str:
 
 @input_error
 def list_notes(note_book: NoteBook) -> str:
-    """List all notes with their tags.
+    """
+    List all notes with their tags.
 
     Args:
         note_book (NoteBook): Instance of the note book.
@@ -303,7 +314,8 @@ def list_notes(note_book: NoteBook) -> str:
 
 @input_error
 def edit_note(note_book: NoteBook) -> str:
-    """Edit the text and/or tags of a note identified by text or tag.
+    """
+    Edit the text and/or tags of a note identified by text or tag.
 
     Args:
         note_book (NoteBook): Instance of the note book.
@@ -333,7 +345,8 @@ def edit_note(note_book: NoteBook) -> str:
 
 @input_error
 def delete_note(note_book: NoteBook) -> str:
-    """Delete notes that match a given text or tag.
+    """
+    Delete notes that match a given text or tag.
 
     Args:
         note_book (NoteBook): Instance of the note book.
@@ -358,7 +371,8 @@ def delete_note(note_book: NoteBook) -> str:
 
 @input_error
 def show_birthday(contact_book: ContactBook):
-    """Show how many days are left until a contact’s birthday.
+    """
+    Show how many days are left until a contact’s birthday.
 
     Args:
         contact_book (ContactBook): Instance of the contact book.
@@ -378,7 +392,8 @@ def show_birthday(contact_book: ContactBook):
 
 @input_error
 def birthdays(contact_book: ContactBook) -> str:
-    """Show upcoming birthdays within a given number of days.
+    """
+    Show upcoming birthdays within a given number of days.
 
     Args:
         contact_book (ContactBook): Instance of the contact book.
@@ -418,7 +433,8 @@ def birthdays(contact_book: ContactBook) -> str:
 
 @input_error
 def show_commands(*args) -> str:
-    """Show a list of all available commands.
+    """
+    Show a list of all available commands.
 
     Args:
         *args (Any): Ignored, for compatibility.
