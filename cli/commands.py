@@ -44,17 +44,15 @@ def add_contact(_, contact_book: ContactBook):
             break
         print(f"{Fore.RED}Invalid phone number. Please enter a valid phone (10–15 digits, optional '+' at start).{Style.RESET_ALL}")
 
-    email = ""
     while True:
         email = input(f"{Fore.CYAN}Email (optional):{Style.RESET_ALL} ").strip()
         if not email:
-            break  # skip
+            break
         if is_valid_email(email):
             break
         print(f"{Fore.RED}Invalid email address. Please enter a valid email or press Enter to skip.{Style.RESET_ALL}")
 
     address = input(f"{Fore.CYAN}Address (optional):{Style.RESET_ALL} ").strip()
-    birthday = ""
     while True:
         birthday = input(f"{Fore.CYAN}Birthday (YYYY-MM-DD):{Style.RESET_ALL} ").strip()
         if not birthday:
