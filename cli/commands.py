@@ -298,7 +298,7 @@ def add_note(note_book: NoteBook) -> str:
 @input_error
 def search_note(note_book: NoteBook) -> str:
     """
-    Search for notes by keyword or tag.
+    Search for notes by keyword or tag, and return them sorted alphabetically.
 
     Args:
         note_book (NoteBook): Instance of the note book.
@@ -309,16 +309,21 @@ def search_note(note_book: NoteBook) -> str:
 
     keyword = input(f"{Fore.CYAN}Keyword or tag to search:{Style.RESET_ALL} ").strip()
     results = note_book.search_notes(keyword)
+    sorted_results = sorted(results, key=lambda n: n.text.lower())
+
     return (
-        "\n".join(f"{Fore.YELLOW}Note:{Style.RESET_ALL} {n.text} | {Fore.MAGENTA}Tags:{Style.RESET_ALL} {', '.join(n.tags)}" for n in results)
-        or f"{Fore.RED}No notes found.{Style.RESET_ALL}"
+        "\n".join(
+            f"{Fore.YELLOW}Note:{Style.RESET_ALL} {n.text} | {Fore.MAGENTA}Tags:{Style.RESET_ALL} {', '.join(n.tags)}"
+            for n in sorted_results
+        ) or f"{Fore.RED}No notes found.{Style.RESET_ALL}"
     )
+
 
 
 @input_error
 def list_notes(note_book: NoteBook) -> str:
     """
-    List all notes with their tags.
+    List all notes with their tags, sorted alphabetically by note text.
 
     Args:
         note_book (NoteBook): Instance of the note book.
@@ -326,12 +331,13 @@ def list_notes(note_book: NoteBook) -> str:
     Returns:
         str: Tabulated list of notes.
     """
-
     if not note_book.notes:
         return f"{Fore.RED}No notes found.{Style.RESET_ALL}"
 
+    sorted_notes = sorted(note_book.notes, key=lambda n: n.text.lower())
+
     table = []
-    for note in note_book.notes:
+    for note in sorted_notes:
         table.append([
             f"{Fore.YELLOW}{note.text}{Style.RESET_ALL}",
             f"{Fore.MAGENTA}{', '.join(note.tags)}{Style.RESET_ALL}" if note.tags else ""
@@ -339,6 +345,7 @@ def list_notes(note_book: NoteBook) -> str:
 
     headers = [f"{Fore.YELLOW}Note Text{Style.RESET_ALL}", f"{Fore.MAGENTA}Tags{Style.RESET_ALL}"]
     return tabulate(table, headers=headers, tablefmt="fancy_grid")
+
 
 
 @input_error
