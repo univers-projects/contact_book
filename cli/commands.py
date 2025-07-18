@@ -451,7 +451,6 @@ def birthdays(contact_book: ContactBook) -> str:
     if not matches:
         return f"{Fore.RED}No upcoming birthdays in {days} days.{Style.RESET_ALL}"
 
-    # Sort matches by number of days until birthday
     matches.sort(key=lambda x: x[2])
 
     table = [
