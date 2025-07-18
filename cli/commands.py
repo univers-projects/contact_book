@@ -163,32 +163,61 @@ def edit_contact(contact_book: ContactBook) -> str:
     """
 
     name = input(f"{Fore.CYAN}Contact name to edit:{Style.RESET_ALL} ").strip()
-    field = input(f"{Fore.CYAN}Field to edit (name, phone, email, address, birthday):{Style.RESET_ALL} ").strip()
-    value = input(f"{Fore.CYAN}New value for {field}:{Style.RESET_ALL} ").strip()
+    contact = contact_book.find(name)
+    if not contact:
+        return f"{Fore.RED}Contact '{name}' not found. Add a new contact instead.{Style.RESET_ALL}"
+
+    field = input(f"{Fore.CYAN}Field to edit (name, phone, email, address, birthday):{Style.RESET_ALL} ").strip().lower()
+    if field not in ["name", "phone", "email", "address", "birthday"]:
+        return f"{Fore.RED}Invalid field. Please choose one of: name, phone, email, address, birthday.{Style.RESET_ALL}"
 
     if field == "name":
-        value = value.title()
-        contact = contact_book.find(name)
-        if contact:
-            contact_book.delete_contact(name)
-            contact.name = value
-            contact_book.add_contact(contact)
-            return f"{Fore.GREEN}Contact renamed to '{value}'.{Style.RESET_ALL}"
-        else:
-            return f"{Fore.RED}Contact '{name}' not found.{Style.RESET_ALL}"
+        while True:
+            new_name = input(f"{Fore.CYAN}New name:{Style.RESET_ALL} ").strip().title()
+            if not new_name:
+                print(f"{Fore.RED}Name cannot be empty.{Style.RESET_ALL}")
+                continue
+            if contact_book.find(new_name):
+                print(f"{Fore.YELLOW}A contact with the name '{new_name}' already exists. Choose a different name.{Style.RESET_ALL}")
+                continue
+            break
+
+        contact_book.delete_contact(name)
+        contact.name = new_name
+        contact_book.add_contact(contact)
+        return f"{Fore.GREEN}Contact renamed to '{new_name}'.{Style.RESET_ALL}"
+
+    elif field == "phone":
+        while True:
+            new_value = input(f"{Fore.CYAN}New phone number:{Style.RESET_ALL} ").strip()
+            if is_valid_phone(new_value):
+                break
+            print(f"{Fore.RED}Invalid phone number. Please enter a valid phone (10–15 digits, optional '+' at start).{Style.RESET_ALL}")
+
+    elif field == "email":
+        while True:
+            new_value = input(f"{Fore.CYAN}New email address:{Style.RESET_ALL} ").strip()
+            if is_valid_email(new_value):
+                break
+            print(f"{Fore.RED}Invalid email address. Please enter a valid format (e.g. name@example.com).{Style.RESET_ALL}")
 
     elif field == "birthday":
-        while not is_valid_birthday(value):
-            print(f"{Fore.RED}Invalid birthday. Please use YYYY-MM-DD and ensure the date is not in the future.{Style.RESET_ALL}")
-            value = input(f"{Fore.CYAN}New value for {field}:{Style.RESET_ALL} ").strip()
+        while True:
+            new_value = input(f"{Fore.CYAN}New birthday (YYYY-MM-DD):{Style.RESET_ALL} ").strip()
+            if is_valid_birthday(new_value):
+                break
+            print(f"{Fore.RED}Invalid birthday. Please use YYYY-MM-DD and ensure the date is not in the past.{Style.RESET_ALL}")
 
-    success = contact_book.edit_contact(name, **{field: value})
-    return (
-        f"{Fore.GREEN}Contact '{name}' updated.{Style.RESET_ALL}"
-        if success else
-        f"{Fore.RED}Contact '{name}' not found.{Style.RESET_ALL}"
-    )
+    elif field == "address":
+        new_value = input(f"{Fore.CYAN}New address:{Style.RESET_ALL} ").strip()
 
+    success = contact_book.edit_contact(name, **{field: new_value})
+    if success:
+        updated_contact = contact_book.find(name)
+        return f"{Fore.GREEN}Contact '{updated_contact.name}' updated.{Style.RESET_ALL}"
+    else:
+        return f"{Fore.RED}Contact '{name}' not found.{Style.RESET_ALL}"
+    
 
 @input_error
 def delete_contact(contact_book: ContactBook) -> str:
