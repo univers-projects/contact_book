@@ -409,13 +409,12 @@ def show_birthday(contact_book: ContactBook):
     Returns:
         str: Birthday info or error.
     """
-
     name = input(f"{Fore.CYAN}Name:{Style.RESET_ALL} ").strip()
     contact = contact_book.find(name)
 
     if contact and contact.birthday:
         days = contact_book.days_to_birthday(contact.birthday)
-        return f"{Fore.YELLOW}{name}'s birthday is on {contact.birthday}, in {days} days.{Style.RESET_ALL}"
+        return f"{Fore.YELLOW}{contact.name}'s birthday is on {contact.birthday}, in {days} days.{Style.RESET_ALL}"
     return f"{Fore.RED}Birthday not found.{Style.RESET_ALL}"
 
 
