@@ -1,5 +1,5 @@
 import re
-from datetime import datetime
+from datetime import date, datetime
 from tabulate import tabulate
 from colorama import Fore, Style, init
 
@@ -20,30 +20,48 @@ def is_valid_phone(phone):
 
 def is_valid_birthday(birthday_str: str) -> bool:
     try:
-        datetime.strptime(birthday_str, "%Y-%m-%d")
-        return True
+        bday = datetime.strptime(birthday_str, "%Y-%m-%d").date()
+        return bday <= date.today()
     except ValueError:
         return False
 
 
 @input_error
 def add_contact(_, contact_book: ContactBook):
-    name = input(f"{Fore.CYAN}Name:{Style.RESET_ALL} ").strip()
-    if not name:
-        raise ValueError("Name is required.")
+    while True:
+        name = input(f"{Fore.CYAN}Name:{Style.RESET_ALL} ").strip().title()
+        if not name:
+            print(f"{Fore.RED}Name is required.{Style.RESET_ALL}")
+            continue
+        if contact_book.find(name):
+            print(f"{Fore.YELLOW}Contact with name '{name}' already exists. Please choose a different name.{Style.RESET_ALL}")
+            continue
+        break
 
-    phone = input(f"{Fore.CYAN}Phone:{Style.RESET_ALL} ").strip()
-    if not is_valid_phone(phone):
-        raise ValueError("Invalid phone number")
+    while True:
+        phone = input(f"{Fore.CYAN}Phone:{Style.RESET_ALL} ").strip()
+        if is_valid_phone(phone):
+            break
+        print(f"{Fore.RED}Invalid phone number. Please enter a valid phone (10–15 digits, optional '+' at start).{Style.RESET_ALL}")
 
-    email = input(f"{Fore.CYAN}Email (optional):{Style.RESET_ALL} ").strip()
-    if email and not is_valid_email(email):
-        raise ValueError("Invalid email address")
+    email = ""
+    while True:
+        email = input(f"{Fore.CYAN}Email (optional):{Style.RESET_ALL} ").strip()
+        if not email:
+            break  # skip
+        if is_valid_email(email):
+            break
+        print(f"{Fore.RED}Invalid email address. Please enter a valid email or press Enter to skip.{Style.RESET_ALL}")
 
     address = input(f"{Fore.CYAN}Address (optional):{Style.RESET_ALL} ").strip()
-    birthday = input(f"{Fore.CYAN}Birthday (YYYY-MM-DD, optional):{Style.RESET_ALL} ").strip()
-    if birthday and not is_valid_birthday(birthday):
-        raise ValueError("Invalid birthday. Use YYYY-MM-DD")
+    birthday = ""
+    while True:
+        birthday = input(f"{Fore.CYAN}Birthday (YYYY-MM-DD):{Style.RESET_ALL} ").strip()
+        if not birthday:
+            break  # Birthday is optional
+        if is_valid_birthday(birthday):
+            break
+        print(f"{Fore.RED}Invalid birthday. Please use YYYY-MM-DD and ensure the date is not in the future.{Style.RESET_ALL}")
 
     contact = Contact(name, phone, email, address, birthday)
     success = contact_book.add_contact(contact)
@@ -88,6 +106,22 @@ def edit_contact(_, contact_book: ContactBook):
     name = input(f"{Fore.CYAN}Contact name to edit:{Style.RESET_ALL} ").strip()
     field = input(f"{Fore.CYAN}Field to edit (name, phone, email, address, birthday):{Style.RESET_ALL} ").strip()
     value = input(f"{Fore.CYAN}New value for {field}:{Style.RESET_ALL} ").strip()
+
+    if field == "name":
+        value = value.title()
+        contact = contact_book.find(name)
+        if contact:
+            contact_book.delete_contact(name)
+            contact.name = value
+            contact_book.add_contact(contact)
+            return f"{Fore.GREEN}Contact renamed to '{value}'.{Style.RESET_ALL}"
+        else:
+            return f"{Fore.RED}Contact '{name}' not found.{Style.RESET_ALL}"
+
+    elif field == "birthday":
+        while not is_valid_birthday(value):
+            print(f"{Fore.RED}Invalid birthday. Please use YYYY-MM-DD and ensure the date is not in the future.{Style.RESET_ALL}")
+            value = input(f"{Fore.CYAN}New value for {field}:{Style.RESET_ALL} ").strip()
 
     success = contact_book.edit_contact(name, **{field: value})
     return (
