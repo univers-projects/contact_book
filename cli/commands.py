@@ -97,7 +97,7 @@ def add_contact(contact_book: ContactBook) -> str:
     while True:
         birthday = input(f"{Fore.CYAN}Birthday (YYYY-MM-DD):{Style.RESET_ALL} ").strip()
         if not birthday:
-            break  # Birthday is optional
+            break
         if is_valid_birthday(birthday):
             break
         print(f"{Fore.RED}Invalid birthday. Please use YYYY-MM-DD and ensure the date is not in the future.{Style.RESET_ALL}")
