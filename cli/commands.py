@@ -10,15 +10,46 @@ from services.note_book import NoteBook
 
 init(autoreset=True)
 
-def is_valid_email(email):
+
+def is_valid_email(email: str) -> bool:
+    """
+    Check if the given email address is valid.
+
+    Args:
+        email (str): Email address to validate.
+
+    Returns:
+        bool: True if valid, False otherwise.
+    """
+
     return bool(re.match(r"[^@]+@[^@]+\.[^@]+", email))
 
 
-def is_valid_phone(phone):
+def is_valid_phone(phone: str) -> bool:
+    """
+    Validate the phone number format.
+
+    Args:
+        phone (str): Phone number to validate.
+
+    Returns:
+        bool: True if valid, False otherwise.
+    """
+
     return bool(re.match(r"^\+?\d{10,15}$", phone))
 
 
 def is_valid_birthday(birthday_str: str) -> bool:
+    """
+    Validate the birthday format and ensure it is not in the future.
+
+    Args:
+        birthday_str (str): Birthday string in 'YYYY-MM-DD' format.
+
+    Returns:
+        bool: True if valid and not in future, False otherwise.
+    """
+
     try:
         bday = datetime.strptime(birthday_str, "%Y-%m-%d").date()
         return bday <= date.today()
@@ -27,7 +58,17 @@ def is_valid_birthday(birthday_str: str) -> bool:
 
 
 @input_error
-def add_contact(_, contact_book: ContactBook):
+def add_contact(contact_book: ContactBook) -> str:
+    """
+    Prompt user for contact details and add a new contact to the book.
+
+    Args:
+        contact_book (ContactBook): Instance of the contact book.
+
+    Returns:
+        str: Success or error message.
+    """
+
     while True:
         name = input(f"{Fore.CYAN}Name:{Style.RESET_ALL} ").strip().title()
         if not name:
@@ -71,7 +112,17 @@ def add_contact(_, contact_book: ContactBook):
 
 
 @input_error
-def search_contact(_, contact_book: ContactBook):
+def search_contact(contact_book: ContactBook) -> str:
+    """
+    Search for contacts by name and return matching results.
+
+    Args:
+        contact_book (ContactBook): Instance of the contact book.
+
+    Returns:
+        str: Tabulated results or error message.
+    """
+
     query = input(f"{Fore.CYAN}Search query (name):{Style.RESET_ALL} ").strip()
     results = contact_book.search_contacts(query)
 
@@ -100,7 +151,17 @@ def search_contact(_, contact_book: ContactBook):
 
 
 @input_error
-def edit_contact(_, contact_book: ContactBook):
+def edit_contact(contact_book: ContactBook) -> str:
+    """
+    Edit an existing contact's field by name.
+
+    Args:
+        contact_book (ContactBook): Instance of the contact book.
+
+    Returns:
+        str: Update status message.
+    """
+
     name = input(f"{Fore.CYAN}Contact name to edit:{Style.RESET_ALL} ").strip()
     field = input(f"{Fore.CYAN}Field to edit (name, phone, email, address, birthday):{Style.RESET_ALL} ").strip()
     value = input(f"{Fore.CYAN}New value for {field}:{Style.RESET_ALL} ").strip()
@@ -130,7 +191,17 @@ def edit_contact(_, contact_book: ContactBook):
 
 
 @input_error
-def delete_contact(_, contact_book: ContactBook):
+def delete_contact(contact_book: ContactBook) -> str:
+    """
+    Delete a contact by name.
+
+    Args:
+        contact_book (ContactBook): Instance of the contact book.
+
+    Returns:
+        str: Success or failure message.
+    """
+
     name = input(f"{Fore.CYAN}Name of the contact to delete:{Style.RESET_ALL} ").strip()
     removed = contact_book.delete_contact(name)
     return (
@@ -141,7 +212,17 @@ def delete_contact(_, contact_book: ContactBook):
 
 
 @input_error
-def list_contacts(_, contact_book: ContactBook):
+def list_contacts(contact_book: ContactBook) -> str:
+    """
+    List all contacts in the contact book.
+
+    Args:
+        contact_book (ContactBook): Instance of the contact book.
+
+    Returns:
+        str: Tabulated list of contacts.
+    """
+
     if not contact_book.contacts:
         return f"{Fore.RED}No contacts found.{Style.RESET_ALL}"
 
@@ -167,7 +248,17 @@ def list_contacts(_, contact_book: ContactBook):
 
 
 @input_error
-def add_note(_, note_book: NoteBook):
+def add_note(note_book: NoteBook) -> str:
+    """
+    Prompt user to add a new note with optional tags.
+
+    Args:
+        note_book (NoteBook): Instance of the note book.
+
+    Returns:
+        str: Success message.
+    """
+
     text = input(f"{Fore.CYAN}Note text:{Style.RESET_ALL} ").strip()
     tags_input = input(f"{Fore.CYAN}Tags (comma-separated, optional):{Style.RESET_ALL} ").strip()
     tags = [tag.strip() for tag in tags_input.split(',')] if tags_input else []
@@ -176,7 +267,17 @@ def add_note(_, note_book: NoteBook):
 
 
 @input_error
-def search_note(_, note_book: NoteBook):
+def search_note(note_book: NoteBook) -> str:
+    """
+    Search for notes by keyword or tag.
+
+    Args:
+        note_book (NoteBook): Instance of the note book.
+
+    Returns:
+        str: Search result or error message.
+    """
+
     keyword = input(f"{Fore.CYAN}Keyword or tag to search:{Style.RESET_ALL} ").strip()
     results = note_book.search_notes(keyword)
     return (
@@ -186,7 +287,17 @@ def search_note(_, note_book: NoteBook):
 
 
 @input_error
-def list_notes(_, note_book: NoteBook):
+def list_notes(note_book: NoteBook) -> str:
+    """
+    List all notes with their tags.
+
+    Args:
+        note_book (NoteBook): Instance of the note book.
+
+    Returns:
+        str: Tabulated list of notes.
+    """
+
     if not note_book.notes:
         return f"{Fore.RED}No notes found.{Style.RESET_ALL}"
 
@@ -202,7 +313,17 @@ def list_notes(_, note_book: NoteBook):
 
 
 @input_error
-def edit_note(_, note_book: NoteBook):
+def edit_note(note_book: NoteBook) -> str:
+    """
+    Edit the text and/or tags of a note identified by text or tag.
+
+    Args:
+        note_book (NoteBook): Instance of the note book.
+
+    Returns:
+        str: Update status message.
+    """
+
     identifier = input(f"{Fore.CYAN}Enter note text or tag to edit:{Style.RESET_ALL} ").strip()
     new_text = input(f"{Fore.CYAN}New text:{Style.RESET_ALL} ").strip()
 
@@ -223,7 +344,17 @@ def edit_note(_, note_book: NoteBook):
 
 
 @input_error
-def delete_note(_, note_book: NoteBook):
+def delete_note(note_book: NoteBook) -> str:
+    """
+    Delete notes that match a given text or tag.
+
+    Args:
+        note_book (NoteBook): Instance of the note book.
+
+    Returns:
+        str: Deletion status message.
+    """
+
     identifier = input(f"{Fore.CYAN}Enter note text or tag to delete:{Style.RESET_ALL} ").strip()
     original_len = len(note_book.notes)
 
@@ -239,7 +370,17 @@ def delete_note(_, note_book: NoteBook):
 
 
 @input_error
-def show_birthday(_, contact_book):
+def show_birthday(contact_book: ContactBook):
+    """
+    Show how many days are left until a contact’s birthday.
+
+    Args:
+        contact_book (ContactBook): Instance of the contact book.
+
+    Returns:
+        str: Birthday info or error.
+    """
+
     name = input(f"{Fore.CYAN}Name:{Style.RESET_ALL} ").strip()
     contact = contact_book.find(name)
 
@@ -250,7 +391,17 @@ def show_birthday(_, contact_book):
 
 
 @input_error
-def birthdays(_, contact_book):
+def birthdays(contact_book: ContactBook) -> str:
+    """
+    Show upcoming birthdays within a given number of days.
+
+    Args:
+        contact_book (ContactBook): Instance of the contact book.
+
+    Returns:
+        str: Tabulated list of birthdays or message.
+    """
+
     try:
         days = int(input("Show birthdays in how many days? ").strip())
     except ValueError:
@@ -281,12 +432,15 @@ def birthdays(_, contact_book):
 
 
 @input_error
-def show_commands(_, *args):
+def show_commands(*args) -> str:
     """
+    Show a list of all available commands.
 
-    :param _:
-    :param args:
-    :return:
+    Args:
+        *args (Any): Ignored, for compatibility.
+
+    Returns:
+        str: Formatted list of commands.
     """
     return f"""{Fore.GREEN}Available commands:{Style.RESET_ALL}
   {Fore.CYAN}📇 Contacts:{Style.RESET_ALL}
