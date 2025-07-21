@@ -123,7 +123,7 @@ def search_contact(contact_book: ContactBook) -> str:
         str: Tabulated results or error message.
     """
 
-    query = input(f"{Fore.CYAN}Search query (name):{Style.RESET_ALL} ").strip()
+    query = input(f"{Fore.CYAN}Search query:{Style.RESET_ALL} ").strip()
     results = contact_book.search_contacts(query)
 
     if not results:
